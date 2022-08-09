@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html style="height:100%">
+  <head>
+    <meta charset="utf-8">
+
+
+    <link rel="stylesheet" href="leaflet/leaflet.css" />
+    <link rel="stylesheet" href="css/map.css">
+    <script src="js/main.js"></script>
+    <script src="leaflet/leaflet.js"></script>
+    <script src="leaflet/leaflet-arrows.js"></script>
+    <script src="leaflet/leaflet.rotatedMarker.js"></script>
+    <script src="js/jquery-3.5.1.min.js"></script>
+
+  </head>
+  <body style="height:100%;margin:0;">
+
+    <div class="button-wrapper">
+      <input id="WP_checkbox" onchange="showWP()" type="checkbox"/>
+      <label for="WP_checkbox">Show waypoints (red)</label><br>
+      <input id="DLtiles_checkbox" onchange="useDLtiles()" type="checkbox">
+      <label for="DLtiles_checkbox">Use downloaded tiles</label><br>
+    </div>
+
+
+    <div id="map" style="height:100%;">
+
+    </div>
+
+    <script>
+      // initialize Leaflet
+      var map = L.map('map');
+      var tile_layer = L.layerGroup().addTo(map);
+      var boat_layer = L.layerGroup().addTo(map);
+      var wps_layer = L.layerGroup().addTo(map);
+      map.setView({lat:52.484691,lon:-1.888775},15);
+
+      // add the OpenStreetMap tiles
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap contributors</a>'
+      }).addTo(tile_layer);
+
+      // show the scale bar on the lower left corner
+      L.control.scale().addTo(map);
+
+      const interval = setInterval(function() {
+        async_show_position(map,boat_layer)
+      }, 250);
+
+      const showWP = function() {
+        if (document.querySelector('#WP_checkbox').checked){
+          async_show_wps(map,wps_layer);
+        }else{
+          wps_layer.clearLayers();
+        }
+      }
+
+      const useDLtiles = function() {
+        if (document.querySelector('#DLtiles_checkbox').checked){
+          tile_layer.clearLayers();
+          L.tileLayer('http://map.localhost/{z}/{x}/{y}.png', {
+            maxZoom: 20,
+            attribution: ''
+          }).addTo(tile_layer);
+        }else{
+          tile_layer.clearLayers();
+          L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap contributors</a>'
+          }).addTo(tile_layer);
+        }
+      }
+
+
+    </script>
+  </body>
+</html>
