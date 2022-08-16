@@ -2,7 +2,7 @@ function async_show_position(map,layerGroup){
 
   var boat_icon = L.icon({ iconUrl: 'img/boat.png',
                            iconSize:     [26, 70], // size of the icon
-                           iconAnchor:   [13, 35], // point of the icon which will correspond to shower's location
+                           iconAnchor:   [13, 35], // point of the icon which will correspond to marker's location
                            popupAnchor:  [13, -10] // point from which the popup should open relative to the iconAnchor
                            });
 
@@ -54,8 +54,8 @@ function async_show_wps(map,layerGroup){
                          [line_data[i+1]['lat'], line_data[i+1]['lon']]];
           var polyline = L.polyline(latlngs, {color: 'red',opacity: 0.8});
           polyline.addTo(layerGroup);
-          L.shower({lon: line_data[i]['lon'], lat: line_data[i]['lat']}).bindPopup("wp n°"+(i+1)).addTo(layerGroup);
+          L.marker({lon: line_data[i]['lon'], lat: line_data[i]['lat']}).bindPopup("wp n°"+(i+1)).addTo(layerGroup);
         }
-        L.shower({lon: line_data[line_data.length-1]['lon'], lat: line_data[line_data.length-1]['lat']}).bindPopup("wp n°"+line_data.length).addTo(layerGroup);
+        L.marker({lon: line_data[line_data.length-1]['lon'], lat: line_data[line_data.length-1]['lat']}).bindPopup("wp n°"+line_data.length).addTo(layerGroup);
     });
 }
