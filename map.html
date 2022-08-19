@@ -48,7 +48,7 @@
         async_show_position(map,boat_layer)
       }, 250);
 
-      const showWP = function() {
+      function showWP() {
         if (document.querySelector('#WP_checkbox').checked){
           async_show_wps(map,wps_layer);
         }else{
@@ -56,10 +56,10 @@
         }
       }
 
-      const useDLtiles = function() {
+      function useDLtiles() {
         if (document.querySelector('#DLtiles_checkbox').checked){
           tile_layer.clearLayers();
-          L.tileLayer('http://map.localhost/{z}/{x}/{y}.png', {
+          L.tileLayer('http://localhost:5432/{z}/{x}/{y}.png', {
             maxZoom: 20,
             attribution: ''
           }).addTo(tile_layer);
