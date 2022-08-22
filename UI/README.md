@@ -5,7 +5,7 @@
 # Requirements
 
 ```console
-sudo apt install python3-pyqt5 python3-mysql.connector
+sudo apt install python3-pyqt5 python3-pyqt5.qtwebkit python3-mysql.connector
 ```
 
 # Presentation
