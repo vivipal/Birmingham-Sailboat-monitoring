@@ -9,6 +9,16 @@ function async_show_position(map,layerGroup){
 
   $.getJSON('get_position.php',function(jsonData) {
     boat_data = jsonData
+
+    var history_coord = history_line.getLatLngs();
+    if (history_coord.length > 0){
+      if (Math.abs(history_coord[history_coord.length-1].lat - boat_data[0]['lat']) > 0.000001 || Math.abs(history_coord[history_coord.length-1].lon - boat_data[0]['lon']) > 0.000001) {
+        history_line.addLatLng({lon: boat_data[0]['lon'], lat: boat_data[0]['lat']});
+      }
+    }else{
+      history_line.addLatLng({lon: boat_data[0]['lon'], lat: boat_data[0]['lat']});
+    }
+
     layerGroup.clearLayers();
     L.marker({lon: boat_data[0]['lon'], lat: boat_data[0]['lat']},{rotationAngle: boat_data[0]['heading'],icon: boat_icon}).addTo(layerGroup);
     var arrowOptions_HEADING = {distanceUnit: 'px',

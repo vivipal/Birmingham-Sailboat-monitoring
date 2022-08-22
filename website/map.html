@@ -18,6 +18,9 @@
     <div class="button-wrapper">
       <input id="WP_checkbox" onchange="showWP()" type="checkbox"/>
       <label for="WP_checkbox">Show waypoints (red)</label><br>
+      <input id="history_checkbox" onchange="showHist()" type="checkbox"/>
+      <label for="history_checkbox">Show history (blue)</label>
+      <button id="reset_history_button" onclick="reset_history()">Reset history</button><br>
       <input id="DLtiles_checkbox" onchange="useDLtiles()" type="checkbox">
       <label for="DLtiles_checkbox">Use downloaded tiles</label><br>
     </div>
@@ -32,6 +35,7 @@
       var map = L.map('map');
       var tile_layer = L.layerGroup().addTo(map);
       var boat_layer = L.layerGroup().addTo(map);
+      var boat_history_layer = L.layerGroup().addTo(map);
       var wps_layer = L.layerGroup().addTo(map);
       map.setView({lat:52.484691,lon:-1.888775},15);
 
@@ -44,6 +48,9 @@
       // show the scale bar on the lower left corner
       L.control.scale().addTo(map);
 
+      var history_line = L.polyline([],{color: 'blue',opacity: 0.6,dashArray: '4, 6'});
+      history_line.addTo(boat_history_layer);
+
       const interval = setInterval(function() {
         async_show_position(map,boat_layer)
       }, 250);
@@ -55,6 +62,19 @@
           wps_layer.clearLayers();
         }
       }
+
+      function showHist() {
+        if (document.querySelector('#history_checkbox').checked){
+          boat_history_layer.addTo(map)
+        }else{
+          boat_history_layer.removeFrom(map)
+        }
+      }
+
+      function reset_history(){
+          history_line.setLatLngs([]);
+      }
+
 
       function useDLtiles() {
         if (document.querySelector('#DLtiles_checkbox').checked){
